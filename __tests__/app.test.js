@@ -47,18 +47,29 @@ describe('backend-express-template routes', () => {
   });
 
   it('GET - should return a list of users if signed in as admin', async () => {
-    const [agent, user] = await registerAndLogin({
+    const [agent] = await registerAndLogin({
       email: 'admin@example.com',
     });
-    console.log(user);
     const res = await agent.get('/api/v1/users');
 
-    expect(res.body).toEqual([{ ...user }]);
+    expect(res.body.length).toEqual(4);
     expect(res.body).toMatchInlineSnapshot(`
       Array [
         Object {
-          "email": "admin@example.com",
+          "email": "rudyboy@gmail.com",
           "id": "1",
+        },
+        Object {
+          "email": "russell@gmail.com",
+          "id": "2",
+        },
+        Object {
+          "email": "theboys@gmail.com",
+          "id": "3",
+        },
+        Object {
+          "email": "admin@example.com",
+          "id": "4",
         },
       ]
     `);
@@ -67,9 +78,22 @@ describe('backend-express-template routes', () => {
   it('GET - returns a list of restaurants', async () => {
     const res = await request(app).get('/api/v1/restaurants');
     expect(res.status).toBe(200);
+    expect(res.body).toEqual(
+      expect.arrayContaining([
+        {
+          id: expect.any(String),
+          name: expect.any(String),
+        },
+      ])
+    );
+  });
+
+  it('GET - should return restaurant with nested reviews', async () => {
+    const res = await request(app).get('/api/v1/restaurants/1');
     expect(res.body).toEqual(expect.arrayContaining([{
       id: expect.any(String),
-      name: expect.any(String)
+      name: expect.any(String),
+      reviews: expect.any(Array),
     }]));
   });
 

@@ -24,3 +24,10 @@ CREATE TABLE restaurants (
     FOREIGN KEY (review_id) REFERENCES reviews (id)
 );
 
+INSERT INTO restaurants (
+    name
+)
+VALUES
+  ('Luc Lac'),
+  ('Non La'),
+  ('Waffle Window');

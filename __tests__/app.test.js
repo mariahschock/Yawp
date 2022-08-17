@@ -98,7 +98,11 @@ describe('backend-express-template routes', () => {
   });
 
   it('POST - allows logged in user to create new review', async () => {
-
+    const [agent] = await registerAndLogin();
+    const res = await agent.post('/api/v1/restaurants/1/reviews').send({
+      review: 'Cute and trendy, little overpriced',
+    });
+    expect(res.status).toBe(200);
   });
 
   afterAll(() => {

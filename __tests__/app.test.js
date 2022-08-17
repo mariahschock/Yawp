@@ -15,7 +15,6 @@ const registerAndLogin = async (userProps = {}) => {
   const agent = request.agent(app);
   const [user] = await UserService.create({ ...userTest, ...userProps });
   const { email } = user;
-  console.log(user);
   const response = await agent
     .post('/api/v1/users/sessions')
     .send({ email, password });
@@ -120,8 +119,10 @@ describe('backend-express-template routes', () => {
   });
 
   it('DELETE - allows writer or admin to delete review', async () => {
-    const [agent] = await registerAndLogin();
-    const res = await agent.delete('/api/v1/reviews/:id');
+    const [agent] = await registerAndLogin({ email: 'admin@example.com', });
+    const res = await agent.delete('/api/v1/reviews/1');
+    console.log('res.body', res.body);
+    expect(res.status).toBe(200);
   });
 
   afterAll(() => {

@@ -98,11 +98,30 @@ describe('backend-express-template routes', () => {
   });
 
   it('POST - allows logged in user to create new review', async () => {
+    // const newReview = {
+    //   review: 'Cute and trendy, little overpriced'
+    // };
+    // const agent = request.agent(app);
+    // await agent.post('/api/v1/users').send(userTest);
+    // const res = await agent.post('/api/v1/restaurants/1/reviews').send(newReview);
+    // expect(res.status).toBe(200);
+    // expect(res.body).toEqual({
+    //   id: expect.any(String),
+    //   ...newReview,
+    // });
+
     const [agent] = await registerAndLogin();
     const res = await agent.post('/api/v1/restaurants/1/reviews').send({
       review: 'Cute and trendy, little overpriced',
+      user_id: expect.any(String),
+      rest_id: expect.any(String),
     });
     expect(res.status).toBe(200);
+  });
+
+  it('DELETE - allows writer or admin to delete review', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.delete('/api/v1/reviews/:id');
   });
 
   afterAll(() => {

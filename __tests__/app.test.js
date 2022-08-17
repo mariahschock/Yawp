@@ -97,6 +97,10 @@ describe('backend-express-template routes', () => {
     }]));
   });
 
+  it('POST - allows logged in user to create new review', async () => {
+
+  });
+
   afterAll(() => {
     pool.end();
   });
